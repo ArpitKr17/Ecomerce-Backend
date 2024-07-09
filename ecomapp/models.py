@@ -1,4 +1,3 @@
-from unicodedata import category
 from django.db import models
 
 class Image(models.Model):
@@ -24,7 +23,7 @@ class Product(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
     images=models.ManyToManyField(Image, related_name='products', null=True, blank=True)
-    category=models.ForeignKey(Category,on_delete=models.CASCADE, null=True, blank=True)
+    category=models.ForeignKey(Category,on_delete=models.CASCADE, null=True, blank=True, related_name='products')
 
     def __str__(self):
         return self.title
@@ -35,8 +34,8 @@ class Variant(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
     price=models.IntegerField()
-    product=models.ForeignKey(Product,on_delete=models.CASCADE)
-    image=models.ForeignKey(Image,on_delete=models.CASCADE)
+    product=models.ForeignKey(Product,on_delete=models.CASCADE, related_name='variants')
+    image=models.ForeignKey(Image,on_delete=models.CASCADE, related_name='variants')
 
     def __str__(self):
         return self.title
