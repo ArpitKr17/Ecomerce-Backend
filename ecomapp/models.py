@@ -45,7 +45,8 @@ class Collection(models.Model):
     title=models.CharField(max_length=100)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
-    product=models.ManyToManyField(Product)
+    products=models.ManyToManyField(Product, related_name='collections')
+    published=models.BooleanField(default=True)
 
     def __str__(self):
         return self.title
