@@ -1,5 +1,7 @@
 from django.contrib import admin
-from models import *
+
+from ecomapp.models import Product, Variant, Image, Collection, Category
+
 # Register your models here.
 
 admin.site.register(Product)
