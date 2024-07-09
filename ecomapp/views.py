@@ -80,4 +80,22 @@ def variants_in_collection(request,collection_id):
             'Images': variant.image.alt_text,
         })
     return JsonResponse({'variants': variant_data})
+
+def variants_in_category(request,category_id):
+    
+    category = Category.objects.get(id=category_id)
+    products=Product.objects.filter(category=category).distinct()
+    variants=Variant.objects.select_related('image').filter(product__in=products)
+    variant_data=[]
+
+    for variant in variants:
+        variant_data.append({
+            'Title':f"Product is {variant.product.title} and the variant is {variant.title} ",
+            'Created_at':variant.created_at,
+            'Updated_at':variant.updated_at,
+            'Available_for_sale':variant.available_for_sale,
+            'Price': variant.price,
+            'Images': variant.image.alt_text,
+        })
+    return JsonResponse({'variants': variant_data})
     
