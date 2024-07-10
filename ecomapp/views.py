@@ -19,7 +19,7 @@ def products(request):
 
 def variants(request):
 
-    variants=Variant.objects.all()
+    variants=Variant.objects.select_related('image','product').all()
     variant_data=[]
 
     for variant in variants:
@@ -49,7 +49,7 @@ def collections(request):
 def products_in_collections(request, collection_ids):
     collection_ids_list = collection_ids.split(',')
     collections = Collection.objects.filter(id__in=collection_ids_list)
-    products=Product.objects.prefetch_related('images', 'collections').filter(collections__in=collections).distinct()
+    products=Product.objects.prefetch_related('images').filter(collections__in=collections).distinct()
     product_data=[]
     print(products)
     for product in products:
@@ -65,7 +65,7 @@ def products_in_collections(request, collection_ids):
 def variants_in_collection(request,collection_id):
     collection = Collection.objects.get(id=collection_id)
     products=Product.objects.filter(collections=collection).distinct()
-    variants=Variant.objects.select_related('image').filter(product__in=products)
+    variants=Variant.objects.select_related('image','product').filter(product__in=products)
     variant_data=[]
 
     for variant in variants:
@@ -83,7 +83,7 @@ def variants_in_category(request,category_id):
     
     category = Category.objects.get(id=category_id)
     products=Product.objects.filter(category=category).distinct()
-    variants=Variant.objects.select_related('image').filter(product__in=products)
+    variants=Variant.objects.select_related('image','product').filter(product__in=products)
     variant_data=[]
 
     for variant in variants:
